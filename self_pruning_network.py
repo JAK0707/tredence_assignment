@@ -763,20 +763,23 @@ def parse_args():
     p.add_argument("--lr",         type=float, default=3e-3,
                    help="Initial learning rate (default: 3e-3)")
     p.add_argument("--lambdas",    type=float, nargs="+",
-                   default=[0.1, 0.5, 2.0],
-                   help="Lambda values to train (default: 0.1 0.5 2.0)")
+                   default=[0.5, 2.0, 5.0],
+                   help="Lambda values to train (default: 0.5 2.0 5.0)")
     p.add_argument("--threshold",  type=float, default=0.1,
                    help="Gate threshold for sparsity counting (default: 0.1)")
     p.add_argument("--warmup",     type=int,   default=10,
                    help="λ warmup epochs (default: 10)")
-    p.add_argument("--entropy-beta", type=float, default=0.3,
-                   help="Entropy reg coefficient relative to λ (default: 0.3)")
+    p.add_argument("--entropy-beta", type=float, default=0.8,
+                   help="Entropy reg coefficient relative to λ (default: 0.8)")
     p.add_argument("--data-root",  type=str,   default="./data")
+    p.add_argument("--output-dir", type=str,   default="output",
+                   help="Directory to save output plots (default: output)")
     return p.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_args()
+    os.makedirs(args.output_dir, exist_ok=True)
 
     print(f"\nDevice : {device}")
     if device.type == "cuda":
@@ -844,7 +847,11 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
     # Training curves
     # -----------------------------------------------------------------------
-    plot_training_curves(histories, args.lambdas, save_path="training_curves.png")
+    plot_training_curves(
+        histories,
+        args.lambdas,
+        save_path=os.path.join(args.output_dir, "training_curves.png"),
+    )
 
     # -----------------------------------------------------------------------
     # Gate distribution — best model (by accuracy)
@@ -858,7 +865,7 @@ if __name__ == "__main__":
         sparsity   = sparsities[best_idx],
         accuracy   = accuracies[best_idx],
         threshold  = args.threshold,
-        save_path  = "gate_distribution.png",
+        save_path  = os.path.join(args.output_dir, "gate_distribution.png"),
     )
 
     # -----------------------------------------------------------------------
@@ -867,10 +874,10 @@ if __name__ == "__main__":
     plot_all_gate_distributions(
         trained_models, args.lambdas, accuracies, sparsities,
         threshold = args.threshold,
-        save_path = "all_gate_distributions.png",
+        save_path = os.path.join(args.output_dir, "all_gate_distributions.png"),
     )
 
     print("\n✓ Done.  Files saved:")
-    print("    gate_distribution.png")
-    print("    all_gate_distributions.png")
-    print("    training_curves.png")
+    print(f"    {os.path.join(args.output_dir, 'gate_distribution.png')}")
+    print(f"    {os.path.join(args.output_dir, 'all_gate_distributions.png')}")
+    print(f"    {os.path.join(args.output_dir, 'training_curves.png')}")
