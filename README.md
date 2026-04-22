@@ -48,7 +48,7 @@ The term $g_i(1 - g_i)$ is the sigmoid derivative. Near $g_i = 0$ (already prune
 
 ## 2. Results Table
 
-Results from training on CIFAR-10 for 50 epochs on an NVIDIA H100 80GB, with λ warmup over 10 epochs and entropy regulariser β=0.8:
+Results from training on CIFAR-10 for 50 epochs, with λ warmup over 10 epochs and entropy regulariser β=0.8:
 
 | Lambda | Test Accuracy | Sparsity Level (%) | Active Weights | Pruned Weights |
 |--------|:-------------:|:------------------:|:--------------:|:--------------:|
