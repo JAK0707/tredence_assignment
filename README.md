@@ -161,6 +161,6 @@ python self_pruning_network.py --help
 
 | File | Contents |
 |---|---|
-| `gate_distribution.png` | Two-panel histogram for the best model |
-| `all_gate_distributions.png` | Side-by-side comparison of all three λ values |
-| `training_curves.png` | CE and sparsity loss curves across epochs |
+| `output/gate_distribution.png` | Two-panel histogram for the best model |
+| `output/all_gate_distributions.png` | Side-by-side comparison of all three λ values |
+| `output/training_curves.png` | CE and sparsity loss curves across epochs |
